@@ -1,0 +1,7 @@
+﻿services:
+  smt.api:
+    image: smt.api
+    build:
+      context: .
+      dockerfile: SMT.API/Dockerfile
+
