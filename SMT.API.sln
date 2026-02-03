@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0826B64C-F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMT.Application", "SMT.Application\SMT.Application.csproj", "{B23B2572-D667-4A27-A559-6E5ED71111BC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infractructure", "Infractructure", "{17AABA8E-7975-4840-B341-3CEEC1C7AE71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMT.Persistence", "SMT.Persistence\SMT.Persistence.csproj", "{FBBF053E-6A3D-4941-BF89-0340CAD83DB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,9 +35,14 @@ Global
 		{B23B2572-D667-4A27-A559-6E5ED71111BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B23B2572-D667-4A27-A559-6E5ED71111BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B23B2572-D667-4A27-A559-6E5ED71111BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBF053E-6A3D-4941-BF89-0340CAD83DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBF053E-6A3D-4941-BF89-0340CAD83DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBF053E-6A3D-4941-BF89-0340CAD83DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBBF053E-6A3D-4941-BF89-0340CAD83DB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{328DAC66-CF36-44CE-8197-0AB396472D78} = {0826B64C-FAF7-4CA3-84E5-A82CE3FDB5F0}
 		{B23B2572-D667-4A27-A559-6E5ED71111BC} = {0826B64C-FAF7-4CA3-84E5-A82CE3FDB5F0}
+		{FBBF053E-6A3D-4941-BF89-0340CAD83DB6} = {17AABA8E-7975-4840-B341-3CEEC1C7AE71}
 	EndGlobalSection
 EndGlobal
