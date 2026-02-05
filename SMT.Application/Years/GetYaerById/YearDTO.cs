@@ -2,7 +2,7 @@ using AutoMapper;
 using SMT.Application.Common.Mappings;
 using SMT.Domain.Models;
 
-namespace SMT.Application.Years.Commands;
+namespace SMT.Application.Years.GetYaerById;
 
 public class YearDTO :IMapWith<Year>
 {

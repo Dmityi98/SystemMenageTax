@@ -1,14 +1,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using SMT.Application.Years.Commands;
+using SMT.Application.Years.GetYaerById;
 
 namespace SMT.API.Controllers;
 
 [Controller]
 public class YearsController : Controller
 {
-    private readonly IMediator _mediator; // ✅
+    private readonly IMediator _mediator; 
 
     public YearsController(IMediator mediator)
     {

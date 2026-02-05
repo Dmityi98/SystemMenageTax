@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SMT.Application.Interfaces;
 using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
-namespace SMT.Application.Years.Commands;
+namespace SMT.Application.Years.GetYaerById;
 
 public class GetYearByIdHandler(ISMTDBContext context, IMapper mapper) :
     IRequestHandler<GetYearByIdCommand, YearDTO>
@@ -19,5 +19,5 @@ public class GetYearByIdHandler(ISMTDBContext context, IMapper mapper) :
             throw new NotFoundExceptions(nameof(Year), request.Id);
         }
         return mapper.Map<YearDTO>(entity);
-    }
+    }       
 }

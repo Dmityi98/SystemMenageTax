@@ -1,7 +1,7 @@
 using AutoMapper;
 using SMT.Domain.Models;
 using SMT.Application.Common.Mappings;
-namespace SMT.Application.Years.Commands;
+namespace SMT.Application.Years.GetYaerById;
 
 public class QuarterDTO : IMapWith<Quarter>
 {

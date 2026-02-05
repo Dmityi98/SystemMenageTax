@@ -10,6 +10,7 @@ builder.Services.AddPersistence(configuration);
 builder.Services.AddApplication();
 // Add services to the container.
 Console.WriteLine(Guid.NewGuid());
+
 var provider = builder.Services.BuildServiceProvider();
 var context = provider.GetRequiredService<SMTDBContext>();
 DbInitialize.Initialize(context);

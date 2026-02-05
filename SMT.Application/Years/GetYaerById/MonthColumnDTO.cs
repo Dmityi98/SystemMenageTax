@@ -2,7 +2,7 @@ using SMT.Domain.Models;
 using SMT.Application.Common.Mappings;  
 using AutoMapper;
 
-namespace SMT.Application.Years.Commands;
+namespace SMT.Application.Years.GetYaerById;
 
 public class MonthColumnDTO : IMapWith<MonthColumn>
 {
