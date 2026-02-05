@@ -1,6 +1,6 @@
 using MediatR;
 using SMT.Domain.Models;
-namespace SMT.Application.Years.Commands;
+namespace SMT.Application.Years.GetYearById;
 
 public class GetYearByIdCommand : IRequest<YearDTO>
 {
