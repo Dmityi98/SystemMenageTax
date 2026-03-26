@@ -1,7 +1,47 @@
+```
+# Build artifacts
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
-/.idea/.idea.SMT.API/.idea
-.sin
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+*.jar
+*.war
+*.class
+*.o
+*.obj
+*.out
+
+# Dependencies
+packages/
+node_modules/
+.nuget/
+.npm/
+.yarn/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+.directory
+*.nfs*
+```

@@ -10,24 +10,24 @@ using SMT.Domain.Exceptions;
 
 namespace SMT.Application.UserCommand.RegusterUser;
 
-public class RegisterUserHandler(ISMTDBContext context,  IMapper mapper) :
+public class RegisterUserHandler(ISMTDBContext context,  IMapper mapper, IPasswordHasher passwordHasher) :
     IRequestHandler<RegisterUserCommand, UserDTO>
 {
     private readonly ISMTDBContext _context = context;
 
     public async Task<UserDTO> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+        var userExists = await context.Users.AnyAsync(u => u.Name == request.Name, cancellationToken);
         
-        if (user != null)
+        if (userExists)
         {
-            throw new NotFoundExceptions(nameof(User), request.Name);
+            throw new NotFoundExceptions(nameof(Domain.Models.User), request.Name);
         }
 
-        user = new Domain.Models.User()
+        var user = new Domain.Models.User()
         {
             Name = request.Name,
-            Password = request.Password
+            Password = passwordHasher.Generate(request.Password)
         };
         
         await _context.Users.AddAsync(user, cancellationToken);

@@ -1,5 +1,6 @@
 using SMT.Application;
 using SMT.Domain.Models;
+using SMT.Infrastructure;
 using SMT.Persistence;
 using SMT.Persistence.SMTConfiguration;
 
@@ -8,10 +9,11 @@ var configuration = builder.Configuration;
 
 builder.Services.AddPersistence(configuration);
 builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 // Add services to the container.
 Console.WriteLine(Guid.NewGuid());
 
-var provider = builder.Services.BuildServiceProvider();
+await using var provider = builder.Services.BuildServiceProvider();
 var context = provider.GetRequiredService<SMTDBContext>();
 DbInitialize.Initialize(context);
 builder.Services.AddControllers();
@@ -33,4 +35,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

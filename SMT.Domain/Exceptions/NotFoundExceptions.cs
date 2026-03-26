@@ -1,9 +1,9 @@
 namespace SMT.Domain.Exceptions;
 
-public class NotFoundExceptions : Exception
+public class NotFoundException : Exception
 {
-    public NotFoundExceptions(string name, object key) :
-        base($"Entity {key} was not found {name}")
+    public NotFoundException(string name, object key) :
+        base($"Entity \"{name}\" ({key}) was not found.")
     {
     }
 }

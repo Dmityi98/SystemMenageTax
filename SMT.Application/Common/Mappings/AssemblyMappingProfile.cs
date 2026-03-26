@@ -9,6 +9,7 @@ public class AssemblyMappingProfile : Profile
     {
         ApplyMappingsFromAssembly(typeof(AssemblyMappingProfile).Assembly);
     }
+    
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {
         var types = assembly.GetExportedTypes()
@@ -23,22 +24,4 @@ public class AssemblyMappingProfile : Profile
             methodInfo?.Invoke(instance, new object[] { this });
         }
     }
-    public AssemblyMappingProfile(Assembly assembly)
-        => ApplyMappingFromAssebmly(assembly);
-
-    public void ApplyMappingFromAssebmly(Assembly assembly)
-    {
-        var types = assembly.GetExportedTypes()
-            .Where(type => type.GetInterfaces()
-                .Any(i => i.IsGenericType && 
-                          i.GetGenericTypeDefinition() == typeof(IMapWith<>)))
-            .ToList();
-
-        foreach (var type in types)
-        {
-            var instance = Activator.CreateInstance(type);
-            var methodInfo = type.GetMethod("Mapping");
-        }
-    }
-    
 }

@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SMT.Application.Years.GetYaerById;
 
@@ -28,6 +27,6 @@ public class YearsController : Controller
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(result);
     }
 }
