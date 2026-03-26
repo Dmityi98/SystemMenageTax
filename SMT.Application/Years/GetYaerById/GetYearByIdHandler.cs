@@ -2,6 +2,8 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SMT.Application.Interfaces;
+using SMT.Application.Years.GetYaerById;
+using SMT.Application.Years.GetYearById;
 using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
 namespace SMT.Application.Years.Commands;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SMT.Application.Years.CreateTable;
+using SMT.Application.Years.GetYaerById;
 using SMT.Application.Years.GetYearById;
 using SMT.Application.Years.UpdateTable;
 
