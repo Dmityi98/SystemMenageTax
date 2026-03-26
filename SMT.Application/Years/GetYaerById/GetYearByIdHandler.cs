@@ -2,9 +2,11 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SMT.Application.Interfaces;
+using SMT.Application.Years.GetYaerById;
+using SMT.Application.Years.GetYearById;
 using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
-namespace SMT.Application.Years.GetYaerById;
+namespace SMT.Application.Years.Commands;
 
 public class GetYearByIdHandler(ISMTDBContext context, IMapper mapper) :
     IRequestHandler<GetYearByIdCommand, YearDTO>
@@ -19,5 +21,5 @@ public class GetYearByIdHandler(ISMTDBContext context, IMapper mapper) :
             throw new NotFoundExceptions(nameof(Year), request.Id);
         }
         return mapper.Map<YearDTO>(entity);
-    }       
+    }
 }

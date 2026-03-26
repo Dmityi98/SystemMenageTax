@@ -20,7 +20,12 @@
     <ItemGroup>
       <ProjectReference Include="..\SMT.Application\SMT.Application.csproj" />
       <ProjectReference Include="..\SMT.Domain\SMT.Domain.csproj" />
+      <ProjectReference Include="..\SMT.Infrastructure\SMT.Infrastructure.csproj" />
       <ProjectReference Include="..\SMT.Persistence\SMT.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Contract\" />
     </ItemGroup>
 
 </Project>

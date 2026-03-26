@@ -17,7 +17,7 @@ public static class DI
         {
             options.UseNpgsql(connection);
         });
-        service.AddScoped<ISMTDBContext>(provider => provider.GetService<SMTDBContext>());
+        service.AddScoped<ISMTDBContext>(provider => provider.GetService<SMTDBContext>()!);
         return service;
     }
 }
