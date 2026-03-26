@@ -18,7 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <ProjectReference Include="..\SMT.Application\SMT.Application.csproj" />
+      <ProjectReference Include="..\SMT.Domain\SMT.Domain.csproj" />
+      <ProjectReference Include="..\SMT.Persistence\SMT.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

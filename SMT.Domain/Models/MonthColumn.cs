@@ -7,7 +7,7 @@ public class MonthColumn
     private const decimal DEFAULT_PAID_TAX = 0.6m;
     [Key]
     public Guid Id { get; set; }
-    public Month Mounth { get; set; }    
+    public Month Month { get; set; }    
     public decimal? Turnover { get; set; }
     public decimal? Tax => (Turnover) * DEFAULT_PAID_TAX / 100;
     public decimal? TaxPayable { get; set; }
