@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -12,28 +13,38 @@ public class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _options;
 
-    public JwtProvider(IOptions<JwtOptions> options) => _options = options.Value;
-
-    public string GenerateToken(User user)
+    public JwtProvider(IOptions<JwtOptions> options)
     {
-        var claims = new List<Claim>
+        _options = options.Value;
+        
+        if (Encoding.UTF8.GetBytes(_options.SecretKey).Length < 32)
         {
-            new("userId", user.Id.ToString())
-        };
+            throw new InvalidOperationException("SecretKey слишком короткий. Минимум 32 символа.");
+        }
+    }
 
-        var signingCredential = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
-            SecurityAlgorithms.HmacSha256);
+    public string GenerateTokenAccess(List<Claim> claims = null)
+    {
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
+        var signingCredential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             issuer: _options.Issuer,
             audience: _options.Audience,
             claims: claims,
-            signingCredentials: signingCredential,
-            expires: DateTime.UtcNow.AddHours(_options.ExpiresHours));
+            expires: DateTime.UtcNow.AddMinutes(_options.AccessTokenExpiresMinutes), // Access token живет недолго
+            notBefore: DateTime.UtcNow,
+            signingCredentials: signingCredential);
 
-        var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 
-        return tokenValue;
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

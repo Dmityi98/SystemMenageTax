@@ -3,59 +3,79 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SMT.Application.Interfaces;
 using SMT.Application.Years.GetYearById;
+using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
 
 namespace SMT.Application.Years.CreateTable;
 
-public class CreateTableHandler(ISMTDBContext context, IMapper mapper ) : IRequestHandler<CreateTableCommand, YearDTO>
+/// <summary>
+/// Обработчик команды создания годовой таблицы
+/// </summary>
+public class CreateTableHandler(
+    ISMTDBContext context,
+    IMapper mapper) : IRequestHandler<CreateTableCommand, YearDTO>
 {
-
     public async Task<YearDTO> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
-        var user = await context.Users.FirstOrDefaultAsync(user => user.Id == request.Id);
+        // Проверка существования пользователя
+        var userExists = await context.Users
+            .AsNoTracking()
+            .AnyAsync(u => u.Id == request.UserId, cancellationToken);
 
-        var year = await Initialize(request.Id, request.NameTable,  cancellationToken);
+        if (!userExists)
+        {
+            throw new NotFoundExceptions(nameof(User), request.UserId);
+        }
 
-        year.UserId = user.Id;
-        
+        // Создание годовой таблицы с кварталами и месяцами
+        var year = CreateYearWithQuarters(request.UserId, request.NameTable);
+
+        context.Years.Add(year);
+        await context.SaveChangesAsync(cancellationToken);
 
         return mapper.Map<YearDTO>(year);
     }
 
-    private async Task<Year> Initialize(Guid userId,string nameTable, CancellationToken cancellationToken)
+    /// <summary>
+    /// Создаёт объект Year с 4 кварталами по 3 месяца в каждом
+    /// </summary>
+    private static Year CreateYearWithQuarters(Guid userId, string nameTable)
     {
-        var year = new Year()
+        var year = new Year
         {
+            Id = Guid.NewGuid(),
             UserId = userId,
             NameTable = nameTable,
             Quarters = new List<Quarter>()
         };
 
-        int countMonth = 0;
+        var monthIndex = 0;
 
-        for (int quarterIndex = 0; quarterIndex < 4; quarterIndex++)
+        for (var quarterIndex = 0; quarterIndex < 4; quarterIndex++)
         {
-            var quarter = new Quarter()
+            var quarter = new Quarter
             {
+                Id = Guid.NewGuid(),
                 Year = year,
                 YearID = year.Id,
                 Columns = new List<MonthColumn>()
             };
-            for (int monthIndex = 0; monthIndex < 3; monthIndex++)
+
+            for (var i = 0; i < 3; i++)
             {
-                var month = new MonthColumn()
+                var monthColumn = new MonthColumn
                 {
-                    Month = (Month)countMonth++,
+                    Id = Guid.NewGuid(),
+                    Month = (Domain.Models.Month)monthIndex++,
                     Quarter = quarter,
                     QuarterId = quarter.Id
                 };
-                quarter.Columns.Add(month);
+                quarter.Columns.Add(monthColumn);
             }
+
             year.Quarters.Add(quarter);
         }
-        context.Years.Add(year);
-        await context.SaveChangesAsync(cancellationToken);
+
         return year;
     }
-    
 }

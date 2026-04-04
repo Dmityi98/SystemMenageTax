@@ -1,9 +1,11 @@
 using MediatR;
 
-namespace SMT.Application.User.RegisterUser;
+namespace SMT.Application.UserCommand.RegisterUser;
 
-public class RegisterUserCommand : IRequest<RegisterUserDTO>
-{
-    public string Name { get; set; }
-    public string Password { get; set; }
-}
+/// <summary>
+/// Команда регистрации нового пользователя
+/// </summary>
+public record RegisterUserCommand(
+    string Name,
+    string Password
+) : IRequest<RegisterUserDto>;

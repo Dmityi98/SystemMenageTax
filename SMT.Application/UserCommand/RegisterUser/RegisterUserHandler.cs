@@ -1,36 +1,51 @@
-using System.Linq.Expressions;
+
 using MediatR;
 using SMT.Application.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SMT.Application.User.RegisterUser;
 using SMT.Domain.Exceptions;
-
-
+using SMT.Domain.Models;
 
 namespace SMT.Application.UserCommand.RegisterUser;
 
-public class RegisterUserHandler(ISMTDBContext context,  IMapper mapper, IPasswordHasher passwordHasher) :
-    IRequestHandler<RegisterUserCommand, RegisterUserDTO>
+/// <summary>
+/// Обработчик команды регистрации пользователя
+/// </summary>
+public class RegisterUserHandler(
+    ISMTDBContext context,
+    IMapper mapper,
+    IPasswordHasher passwordHasher) : IRequestHandler<RegisterUserCommand, RegisterUserDto>
 {
-
-    public async Task<RegisterUserDTO> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterUserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
-        
-        if (user != null)
+        // Проверка: существует ли пользователь с таким именем
+        var existingUser = await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Name == request.Name, cancellationToken);
+
+        if (existingUser != null)
         {
-            throw new NotFoundExceptions(nameof(User), request.Name);
+            throw new ConflictException($"Пользователь с именем '{request.Name}' уже существует");
         }
 
-        user = new Domain.Models.User()
+        // Создание нового пользователя
+        var user = new User
         {
             Name = request.Name,
             Password = passwordHasher.Generate(request.Password)
         };
-        
+
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-        return mapper.Map<RegisterUserDTO>(user);
+
+        return mapper.Map<RegisterUserDto>(user);
     }
+}
+
+/// <summary>
+/// Исключение конфликта (пользователь уже существует)
+/// </summary>
+public class ConflictException : Exception
+{
+    public ConflictException(string message) : base(message) { }
 }

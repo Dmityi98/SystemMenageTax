@@ -11,12 +11,14 @@ public class SMTDBContext : DbContext, ISMTDBContext
     public DbSet<MonthColumn> Months { get; set; }
     public DbSet<Quarter> Quarters { get; set; }
 
+    public SMTDBContext() { }
+
     public SMTDBContext(DbContextOptions<SMTDBContext> options)
         : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new SMTConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SMTDBContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }

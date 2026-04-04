@@ -1,4 +1,4 @@
-using AutoMapper;
+using System.Security.Claims;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SMT.Application.Interfaces;
@@ -7,29 +7,46 @@ using SMT.Domain.Models;
 
 namespace SMT.Application.UserCommand.LoginUser;
 
+/// <summary>
+/// Обработчик команды входа пользователя
+/// </summary>
 public class LoginUserCommandHandler(
-    IMapper mapper,
     IPasswordHasher passwordHasher,
     IJwtProvider jwtProvider,
-    ISMTDBContext contexts) :
-    IRequestHandler<LoginUserCommand, LoginUserDTO>
+    ISMTDBContext context) : IRequestHandler<LoginUserCommand, LoginUserDto>
 {
-    public async Task<LoginUserDTO> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<LoginUserDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await contexts.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
-        
-        if (user == null)
+        // Поиск пользователя
+        var user = await context.Users
+            .FirstOrDefaultAsync(u => u.Name == request.Name, cancellationToken);
+
+        // Безопасная проверка (не раскрываем, что именно не так)
+        if (user == null || !passwordHasher.Verify(request.Password, user.Password))
         {
-              throw new Exception();
+            throw new UnauthorizedException("Неверный логин или пароль");
         }
-        
-        if (!passwordHasher.Verify(request.Password, user.Password))
+
+        // Генерация токенов
+        var claims = new List<Claim>
         {
-            throw new Exception();
-        }
-        
-        return new LoginUserDTO(
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.Name),
+        };
+
+        var accessToken = jwtProvider.GenerateTokenAccess(claims);
+        var refreshToken = jwtProvider.GenerateRefreshToken();
+
+        // Сохранение Refresh Token в БД
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+        await context.SaveChangesAsync(cancellationToken);
+
+        return new LoginUserDto(
             user.Name,
-            jwtProvider.GenerateToken(user));
+            accessToken,
+            refreshToken
+        );
     }
 }

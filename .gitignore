@@ -221,6 +221,14 @@ project.lock.json
 # UWP Projects
 AppPackages/
 
+# Environment variables with secrets
+.env
+.env.local
+.env.*.local
+
+# User secrets
+secrets.json
+
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####

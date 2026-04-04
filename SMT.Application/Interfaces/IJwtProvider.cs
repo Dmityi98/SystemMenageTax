@@ -1,8 +1,10 @@
-using SMT.Domain.Models;
+using System.Security.Claims;
 
 namespace SMT.Application.Interfaces;
+using SMT.Domain.Models;
 
 public interface IJwtProvider
 {
-    string GenerateToken(Domain.Models.User user);
+    string GenerateTokenAccess(List<Claim> claims = null);
+    string GenerateRefreshToken();
 }

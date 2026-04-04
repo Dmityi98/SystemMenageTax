@@ -14,18 +14,8 @@ namespace SMT.Persistence.SMTConfiguration
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(y => y.TotalForQuartet)
+            builder.Property(y => y.TotalForQuarter)
                 .HasColumnType("decimal(18,2)");
-
-            builder.HasOne(y => y.User)
-                .WithMany(u => u.Years)
-                .HasForeignKey(y => y.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(y => y.Quarters)
-                .WithOne(q => q.Year)
-                .HasForeignKey(q => q.YearID)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
