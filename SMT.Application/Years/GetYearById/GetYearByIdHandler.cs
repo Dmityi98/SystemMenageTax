@@ -1,16 +1,13 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SMT.Application.Dtos;
 using SMT.Application.Interfaces;
-using SMT.Application.Years.GetYearById;
 using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
 
-namespace SMT.Application.Years.Commands;
+namespace SMT.Application.Years.GetYearById;
 
-/// <summary>
-/// Обработчик команды получения годовой таблицы по ID
-/// </summary>
 public class GetYearByIdHandler(
     ISMTDBContext context,
     IMapper mapper) : IRequestHandler<GetYearByIdCommand, YearDTO>
@@ -27,13 +24,11 @@ public class GetYearByIdHandler(
             throw new NotFoundExceptions(nameof(Year), request.Id);
         }
 
-        // Проверка: принадлежит ли таблица пользователю
         if (entity.UserId != request.UserId)
         {
             throw new UnauthorizedException("У вас нет прав для просмотра этой таблицы");
         }
 
-        // Сортировка кварталов и месяцев
         entity.Quarters = entity.Quarters
             .OrderBy(q => q.Columns.Min(c => (int)c.Month))
             .ToList();

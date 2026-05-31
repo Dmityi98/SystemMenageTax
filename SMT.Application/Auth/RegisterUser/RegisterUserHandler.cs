@@ -3,8 +3,8 @@ using MediatR;
 using SMT.Application.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
+using SMT.Domain.Exceptions;
 
 namespace SMT.Application.UserCommand.RegisterUser;
 
@@ -29,23 +29,15 @@ public class RegisterUserHandler(
         }
 
         // Создание нового пользователя
-        var user = new User
+        var user = new Domain.Models.User
         {
             Name = request.Name,
-            Password = passwordHasher.Generate(request.Password)
+            Password = passwordHasher.Generate(request.Password),
         };
-
+        user.Profile = UserProfile.Create(user.Id);
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
         return mapper.Map<RegisterUserDto>(user);
     }
-}
-
-/// <summary>
-/// Исключение конфликта (пользователь уже существует)
-/// </summary>
-public class ConflictException : Exception
-{
-    public ConflictException(string message) : base(message) { }
 }

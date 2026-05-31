@@ -1,6 +1,6 @@
 using SMT.Domain.Models;
 
-namespace SMT.Application.Years.GetYearById;
+namespace SMT.Application.Dtos;
 
 /// <summary>
 /// DTO колонки месяца

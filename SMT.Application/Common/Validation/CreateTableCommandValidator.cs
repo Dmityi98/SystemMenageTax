@@ -7,9 +7,6 @@ public class CreateTableCommandValidator : AbstractValidator<CreateTableCommand>
 {
     public CreateTableCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("ID пользователя обязателен");
-
         RuleFor(x => x.NameTable)
             .NotEmpty().WithMessage("Название таблицы обязательно")
             .MaximumLength(100).WithMessage("Название не должно превышать 100 символов");

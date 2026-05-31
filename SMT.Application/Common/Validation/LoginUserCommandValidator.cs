@@ -1,5 +1,5 @@
 using FluentValidation;
-using SMT.Application.UserCommand.LoginUser;
+using SMT.Application.Auth.LoginUser;
 
 namespace SMT.Application.Common.Validation;
 
@@ -14,7 +14,7 @@ public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Пароль обязателен")
-            .MinimumLength(6).WithMessage("Пароль должен содержать минимум 6 символов")
+            .MinimumLength(8).WithMessage("Пароль должен содержать минимум 6 символов")
             .MaximumLength(100).WithMessage("Пароль не должен превышать 100 символов");
     }
 }

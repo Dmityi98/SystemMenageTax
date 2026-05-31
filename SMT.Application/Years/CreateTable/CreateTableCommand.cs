@@ -1,11 +1,8 @@
 using MediatR;
-using SMT.Application.Years.GetYearById;
+using SMT.Application.Dtos;
 
 namespace SMT.Application.Years.CreateTable;
 
-/// <summary>
-/// Команда создания новой годовой таблицы
-/// </summary>
 public record CreateTableCommand(
     Guid UserId,
     string NameTable

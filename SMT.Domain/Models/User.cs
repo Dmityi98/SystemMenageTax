@@ -25,7 +25,9 @@ public class User
 
     // Время истечения срока действия Refresh Token
     public DateTime? RefreshTokenExpiryTime { get; set; }
-
+    
+    // Профиль пользователя 
+    public UserProfile Profile { get; set; } = new UserProfile();
     // Навигационное свойство: у одного пользователя много записей Year
     public List<Year>? Years { get; set; } = new List<Year>();
 
@@ -35,4 +37,6 @@ public class User
 
     [NotMapped]
     public bool HasValidRefreshToken => !string.IsNullOrEmpty(RefreshToken) && !IsRefreshTokenExpired;
+    
+    public bool IsActive { get; set; }
 }

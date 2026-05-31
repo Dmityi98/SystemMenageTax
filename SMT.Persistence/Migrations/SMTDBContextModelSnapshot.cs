@@ -72,6 +72,9 @@ namespace SMT.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -92,6 +95,34 @@ namespace SMT.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SMT.Domain.Models.UserProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("EndDatePayment")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("IpRegistrationDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("SMT.Domain.Models.Year", b =>
@@ -140,6 +171,17 @@ namespace SMT.Persistence.Migrations
                     b.Navigation("Year");
                 });
 
+            modelBuilder.Entity("SMT.Domain.Models.UserProfile", b =>
+                {
+                    b.HasOne("SMT.Domain.Models.User", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("SMT.Domain.Models.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SMT.Domain.Models.Year", b =>
                 {
                     b.HasOne("SMT.Domain.Models.User", "User")
@@ -158,6 +200,9 @@ namespace SMT.Persistence.Migrations
 
             modelBuilder.Entity("SMT.Domain.Models.User", b =>
                 {
+                    b.Navigation("Profile")
+                        .IsRequired();
+
                     b.Navigation("Years");
                 });
 

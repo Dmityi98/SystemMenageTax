@@ -1,13 +1,12 @@
 
 using System.Reflection;
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SMT.Application.Common.Behaviors;
 using SMT.Application.Common.Mappings;
+using SMT.Application.Dtos;
 using SMT.Application.UserCommand.RegisterUser;
-using SMT.Application.Years.GetYearById;
 using SMT.Domain.Models;
 
 namespace SMT.Application;
@@ -31,7 +30,7 @@ public static class DI
             
             // Регистрируем профили для record types вручную
             // RegisterUserDto
-            cfg.CreateMap<User, RegisterUserDto>()
+            cfg.CreateMap<Domain.Models.User, RegisterUserDto>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ReverseMap();
@@ -58,6 +57,9 @@ public static class DI
                 .ForMember(d => d.TaxPayable, opt => opt.MapFrom(s => s.TaxPayable))
                 .ForMember(d => d.PaidTax, opt => opt.MapFrom(s => s.PaidTax))
                 .ReverseMap();
+            
+            // UserProfileDto
+            cfg.CreateMap<UserProfile, ProfileDTO>().ReverseMap();
         }, assembly);
 
         // Регистрация ValidationBehavior

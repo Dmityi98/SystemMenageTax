@@ -10,6 +10,7 @@ public class SMTDBContext : DbContext, ISMTDBContext
     public DbSet<Year> Years { get; set; }
     public DbSet<MonthColumn> Months { get; set; }
     public DbSet<Quarter> Quarters { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
 
     public SMTDBContext() { }
 

@@ -5,7 +5,7 @@ using SMT.Application.Interfaces;
 using SMT.Domain.Exceptions;
 using SMT.Domain.Models;
 
-namespace SMT.Application.UserCommand.LoginUser;
+namespace SMT.Application.Auth.LoginUser;
 
 /// <summary>
 /// Обработчик команды входа пользователя

@@ -1,6 +1,5 @@
 using SMT.Persistence.SMTConfiguration;
 using Microsoft.EntityFrameworkCore;
-
 namespace SMT.Persistence;
 
 public class DbInitialize

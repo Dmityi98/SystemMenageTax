@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Mime;
 using SMT.Application.Common.Behaviors;
-using SMT.Application.UserCommand.RegisterUser;
 using SMT.Domain.Exceptions;
 
 namespace SMT.API.Middleware;

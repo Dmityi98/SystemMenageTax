@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SMT.Application.UserCommand.LoginUser;
+namespace SMT.Application.Auth.LoginUser;
 
 /// <summary>
 /// Команда входа пользователя

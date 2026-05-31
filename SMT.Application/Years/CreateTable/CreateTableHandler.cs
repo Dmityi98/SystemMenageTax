@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SMT.Application.Dtos;
 using SMT.Application.Interfaces;
 using SMT.Application.Years.GetYearById;
 using SMT.Domain.Exceptions;
@@ -8,26 +9,12 @@ using SMT.Domain.Models;
 
 namespace SMT.Application.Years.CreateTable;
 
-/// <summary>
-/// Обработчик команды создания годовой таблицы
-/// </summary>
 public class CreateTableHandler(
     ISMTDBContext context,
     IMapper mapper) : IRequestHandler<CreateTableCommand, YearDTO>
 {
     public async Task<YearDTO> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
-        // Проверка существования пользователя
-        var userExists = await context.Users
-            .AsNoTracking()
-            .AnyAsync(u => u.Id == request.UserId, cancellationToken);
-
-        if (!userExists)
-        {
-            throw new NotFoundExceptions(nameof(User), request.UserId);
-        }
-
-        // Создание годовой таблицы с кварталами и месяцами
         var year = CreateYearWithQuarters(request.UserId, request.NameTable);
 
         context.Years.Add(year);
@@ -36,9 +23,6 @@ public class CreateTableHandler(
         return mapper.Map<YearDTO>(year);
     }
 
-    /// <summary>
-    /// Создаёт объект Year с 4 кварталами по 3 месяца в каждом
-    /// </summary>
     private static Year CreateYearWithQuarters(Guid userId, string nameTable)
     {
         var year = new Year

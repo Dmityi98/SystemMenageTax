@@ -9,5 +9,6 @@ public interface ISMTDBContext
     DbSet<Year> Years { get; set; }
     DbSet<MonthColumn> Months { get; set; }
     DbSet<Quarter> Quarters { get; set; }
+    DbSet<UserProfile>  UserProfiles { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

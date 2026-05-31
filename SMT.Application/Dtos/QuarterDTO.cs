@@ -1,4 +1,4 @@
-namespace SMT.Application.Years.GetYearById;
+namespace SMT.Application.Dtos;
 
 /// <summary>
 /// DTO квартала

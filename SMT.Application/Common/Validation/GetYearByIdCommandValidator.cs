@@ -9,8 +9,5 @@ public class GetYearByIdCommandValidator : AbstractValidator<GetYearByIdCommand>
     {
         RuleFor(x => x.Id)
             .NotEmpty().WithMessage("ID таблицы обязателен");
-
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("ID пользователя обязателен");
     }
 }

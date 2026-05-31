@@ -1,4 +1,4 @@
-namespace SMT.Application.UserCommand.LoginUser;
+namespace SMT.Application.Auth.LoginUser;
 
 /// <summary>
 /// DTO ответа при входе (токены)

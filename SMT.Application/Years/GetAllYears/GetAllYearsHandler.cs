@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SMT.Application.Interfaces;
 using SMT.Application.Years.GetYearById;
 using Microsoft.AspNetCore.Http;
+using SMT.Application.Dtos;
 
 namespace SMT.Application.Years.GetAllYears;
 
